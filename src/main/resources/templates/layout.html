@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang="pt" xmlns="http://www.w3.org/1999/xhtml"
 xmlns:th="http://www.thymeleaf.org"
-xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+xmlns:sec="http://www.thymeleaf.org/extras/spring-security" >
 
 <head>
 	<title>Spring-Boot Thymeleaf </title>
@@ -22,11 +23,11 @@ xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 	<link th:href="@{/css/registration.css}" rel="stylesheet" />
 </head>
 <body>
-	<!-- <header th:replace="fragments/header :: cabecalho">
-	<div>header</div>
+	<header th:replace="fragments/topo :: topo" sec:authorize="isAuthenticated()">
+		<div>topo</div>
 	</header>
-	 -->
-	<div class="container">
+	 
+	<div class="container" >
 		<!-- <aside>
 			<nav th:replace="fragments/sidebar :: nav-sidebar">
 				<span>Menu</span>

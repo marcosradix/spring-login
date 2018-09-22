@@ -4,8 +4,8 @@
 	<meta charset="UTF-8" />
 </head>
 <body>
-<div class="layout-content" layout:fragment="corpo">
-<form th:action="@{/}" method="get">
+<div layout:fragment="corpo">
+<form th:action="@{/}" method="get" sec:authorize="!isAuthenticated()">
     <button class="btn btn-md btn-warning btn-block" type="Submit">Ir para página de login</button>
 </form>
 

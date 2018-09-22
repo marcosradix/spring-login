@@ -1,9 +1,8 @@
 package com.gpch.login.controller;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
-import com.gpch.login.model.User;
-import com.gpch.login.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -12,6 +11,9 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
+
+import com.gpch.login.model.User;
+import com.gpch.login.service.UserService;
 
 @Controller
 public class LoginController {
@@ -58,11 +60,14 @@ public class LoginController {
     }
 
     @RequestMapping(value="/admin/home", method = RequestMethod.GET)
-    public ModelAndView home(){
+    public ModelAndView home(HttpSession session){
+    	
         ModelAndView modelAndView = new ModelAndView();
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.findUserByEmail(auth.getName());
-        modelAndView.addObject("userName", "Bem-Vindo " + user.getName() + " " + user.getLastName() + " (" + user.getEmail() + ")");
+        //Colocar dados na session
+        session.setMaxInactiveInterval(5); //tempo de session ativa aciosa em milissegundos
+        session.setAttribute("userName", "Bem-Vindo " + user.getName() + " " + user.getLastName() + " (" + user.getEmail() + ")");
         modelAndView.addObject("adminMessage","Conteúdo permitido apenas para administradores.");
         modelAndView.setViewName("admin/home");
         return modelAndView;
