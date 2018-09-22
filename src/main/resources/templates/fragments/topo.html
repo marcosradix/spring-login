@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+</head>
+<body>
+
+	<header th:fragment="topo">
+		<nav
+			class="navbar navbar-inverse navbar navbar-dark bg-dark fixed-top">
+			<div class="row">
+
+				<div class="col">
+
+					<div class="container-fluid">
+						<div class="navbar-header">
+							<form th:action="@{/logout}" method="get">
+								<button class="btn btn-md btn-danger btn-block"
+									name="registration" type="Submit">Sair</button>
+							</form>
+						</div>
+					</div>
+				</div>
+				<div class="col">
+
+					<div class="container-fluid">
+						<div class="navbar-header">
+							<form th:action="@{/registration}" method="get">
+								<button class="btn btn-md btn-warning btn-block" type="Submit">Ir
+									para página de registro.</button>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</nav>
+	</header>
+
+
+</body>
+</html>

@@ -4,15 +4,11 @@
 	<meta charset="UTF-8" />
 </head>
 <body>
-<div class="layout-content" layout:fragment="corpo">
-<div class="container">
+<section class="layout-content" layout:fragment="corpo">
+<div class="container" id="center">
 
-    <form th:action="@{/logout}" method="get">
-        <button class="btn btn-md btn-danger btn-block" name="registration"
-                type="Submit">Sair
-        </button>
-    </form>
-
+<div th:replace="fragments/topo :: topo">topo</div>
+<br/>
     <div class="panel-group" style="margin-top:40px">
         <div class="panel panel-primary">
             <div class="panel-heading">
@@ -27,6 +23,6 @@
     </div>
 
 </div>
-</div>
+</section>
 </body>
 </html>
