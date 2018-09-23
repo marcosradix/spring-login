@@ -36,6 +36,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(AuthenticationManagerBuilder auth)
             throws Exception {
+    	
         auth.
                 jdbcAuthentication()
                 .usersByUsernameQuery(usersQuery)
@@ -44,14 +45,13 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .passwordEncoder(bCryptPasswordEncoder);
     }
 
-    @Override
+   @Override
     protected void configure(HttpSecurity http) throws Exception {
 
-        http.
-                authorizeRequests()
+        http
+                .authorizeRequests()
                 .antMatchers("/").permitAll()
                 .antMatchers("/error/**").permitAll()
-                .antMatchers("/webjars/**").permitAll()
                 .antMatchers("/login").permitAll()
                 .antMatchers("/registration").permitAll()
                 .antMatchers("/admin/**").hasAnyAuthority("ADMIN","USER").anyRequest()
@@ -60,10 +60,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .defaultSuccessUrl("/admin/home")
                 .usernameParameter("email")
                 .passwordParameter("senha")
-                .and().logout()
+                .and().logout().invalidateHttpSession(true)
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                 .logoutSuccessUrl("/").and().exceptionHandling()
                 .accessDeniedPage("/access-denied");
+        
         //Usuário da session
         http.sessionManagement()
         .maximumSessions(1)
@@ -71,6 +72,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         .expiredUrl("/login")
         .sessionRegistry(sessionRegistry());
     }
+    
+    
     //Evitar problemas de logoff
     @Bean
     public HttpSessionEventPublisher httpSessionEventPublisher() {
@@ -86,7 +89,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     public void configure(WebSecurity web) throws Exception {
         web
                 .ignoring()
-                .antMatchers("/resources/**", "/static/**", "/css/**", "/js/**", "/images/**");
+                .antMatchers("/resources/**", "/static/**", "/css/**", "/js/**", "/images/**", "/webjars/**");
     }
 
 }

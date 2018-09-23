@@ -22,12 +22,21 @@ public class LoginController {
     private UserService userService;
 
     @RequestMapping(value={"/", "/login"}, method = RequestMethod.GET)
-    public ModelAndView login(){
-        ModelAndView modelAndView = new ModelAndView();
+    public ModelAndView login( User user , ModelAndView modelAndView, BindingResult result){
+        	modelAndView.addObject("user", user);
+        if (result.hasErrors()) {
+            modelAndView.setViewName("login");
+        }
         modelAndView.setViewName("login");
         return modelAndView;
     }
 
+    @RequestMapping(value={"/access-denied"}, method = RequestMethod.GET)
+    public ModelAndView accessDenied(){
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("access-denied");
+        return modelAndView;
+    }
 
     @RequestMapping(value="/registration", method = RequestMethod.GET)
     public ModelAndView registration(){
@@ -61,14 +70,16 @@ public class LoginController {
 
     @RequestMapping(value="/admin/home", method = RequestMethod.GET)
     public ModelAndView home(HttpSession session){
-    	
+
         ModelAndView modelAndView = new ModelAndView();
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.findUserByEmail(auth.getName());
-        //Colocar dados na session
-        session.setMaxInactiveInterval(5); //tempo de session ativa aciosa em milissegundos
+ 
+      //Colocar dados na session
         session.setAttribute("userName", "Bem-Vindo " + user.getName() + " " + user.getLastName() + " (" + user.getEmail() + ")");
+        session.setMaxInactiveInterval(5); //tempo de session ativa aciosa em milissegundos
         modelAndView.addObject("adminMessage","Conteúdo permitido apenas para administradores.");
+        modelAndView.addObject("userMessage","Você não é um administrador do sistema.");
         modelAndView.setViewName("admin/home");
         return modelAndView;
     }

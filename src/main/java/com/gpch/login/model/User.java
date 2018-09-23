@@ -15,7 +15,7 @@ import java.util.Set;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
+@Entity(name= "com.gpch.login.model.User")
 @Table(name = "user")
 public class User {
 
@@ -30,7 +30,7 @@ public class User {
     @Column(name = "password")
     @Length(min = 5, message = "*Sua senha deve ter ao menos {min} caracteres.")
     @NotEmpty(message = "*Por favor informe sua senha.")
-    private String password;
+    private String senha;
     @Column(name = "name")
     @NotEmpty(message = "*Você deve informar seu nome.")
     private String name;
