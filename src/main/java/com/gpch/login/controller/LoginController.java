@@ -20,12 +20,19 @@ public class LoginController {
 
     @Autowired
     private UserService userService;
+    
+    @Autowired
+    private HttpSession session;
 
     @RequestMapping(value={"/", "/login"}, method = RequestMethod.GET)
-    public ModelAndView login( User user , ModelAndView modelAndView, BindingResult result){
+    public ModelAndView login(User user , ModelAndView modelAndView, BindingResult result){
         	modelAndView.addObject("user", user);
         if (result.hasErrors()) {
             modelAndView.setViewName("login");
+        }
+        if(session.getAttribute("userName") != null) {
+        	modelAndView.setViewName("redirect:/admin/home");
+        	return   modelAndView;
         }
         modelAndView.setViewName("login");
         return modelAndView;
@@ -69,7 +76,7 @@ public class LoginController {
     }
 
     @RequestMapping(value="/admin/home", method = RequestMethod.GET)
-    public ModelAndView home(HttpSession session){
+    public ModelAndView home(){
 
         ModelAndView modelAndView = new ModelAndView();
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -77,7 +84,7 @@ public class LoginController {
  
       //Colocar dados na session
         session.setAttribute("userName", "Bem-Vindo " + user.getName() + " " + user.getLastName() + " (" + user.getEmail() + ")");
-        session.setMaxInactiveInterval(5); //tempo de session ativa aciosa em milissegundos
+        session.setMaxInactiveInterval(15); //tempo de session ativa aciosa em milissegundos
         modelAndView.addObject("adminMessage","Conteúdo permitido apenas para administradores.");
         modelAndView.addObject("userMessage","Você não é um administrador do sistema.");
         modelAndView.setViewName("admin/home");
